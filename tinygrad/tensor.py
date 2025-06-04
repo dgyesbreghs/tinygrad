@@ -282,6 +282,8 @@ class Tensor:
     """
     assert self.dtype.fmt is not None, f"no fmt dtype for {self.dtype}"
     assert all_int(self.shape), f"no data if shape is symbolic, {self.shape=}"
+    if 0 in self.shape:
+      return memoryview(bytearray(0))
     return self._data().cast(self.dtype.fmt, self.shape)
 
   def item(self) -> ConstType:
